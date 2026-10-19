@@ -36,7 +36,7 @@ bunx supabase@beta compute push compute-lucid-221052
 - `POST /tests` starts a test. Optional body: `{ "hours": 24 }`.
 - `GET /tests/:id` shows the tick count, avg/p99/max drift, and the last 20 heartbeats.
 
-The compute is private right now, so these 404 over HTTP (more below). You can check a test with SQL instead:
+The compute is private right now, so these 404 over HTTP. You can check a test with SQL instead:
 
 ```sh
 bunx supabase db query --linked "select count(*), avg(drift_ms)::int, max(drift_ms) from compute_test.heartbeats where test_id = '<test id>'"
@@ -48,11 +48,6 @@ The first 24 hour test (`f59ce3cf-3d6e-4686-834c-5e0591eb4a8b`) started at 17:02
 
 - **Drift is low.** Ticks wake up 0.2 to 0.9 seconds late. That's mostly the worker polling once a second.
 - **Redeploys don't break the workflow.** I redeployed in the middle of a sleep. The old instance drained in under a second and the new one picked up the next tick with 375ms drift. No gaps, no duplicate ticks.
-- **Private computes 404 through the gateway.** Every request to `/compute/v1/<name>` returned "compute instance not found", even with the service role key. Public works, but public has no auth at all.
-- **A few CLI quirks.** `supabase compute` only shows up in the beta CLI with the experimental flag. The CLI wants `size = "2gb"` while the dashboard says `2gb-1vcpu`. `source` can't be the project root.
 
 Not tested yet: a deploy that lands in the middle of a tick, and an instance that gets killed instead of drained.
 
-Would love any feedback here!
-
-The goal is not a fancy app. The goal is to prove a sleeping workflow wakes up on time on Compute.
