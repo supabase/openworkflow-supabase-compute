@@ -1,6 +1,6 @@
 # Supabase Compute + OpenWorkflow experiment
 
-This is a small test app to see if long running background workflows behave on Supabase Compute. Compute is only billed for usage, so I want to make sure a workflow that sleeps for 30 seconds actually wakes up on time, and keeps doing that for 24 hours.
+This is a small test app to see if long running background workflows behave on Supabase Compute. Compute is only billed for usage (still working on pricing details, stay tuned!), so I want to make sure a workflow that sleeps for 30 seconds actually wakes up on time, and keeps doing that for 24 hours.
 
 ## How it works
 
